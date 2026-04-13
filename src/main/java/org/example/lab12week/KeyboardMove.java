@@ -17,15 +17,20 @@ public class KeyboardMove extends Application {
     public void start(Stage stage) throws Exception {
         Pane pane = new Pane();
         pane.setPrefSize(500, 400);
-        Rectangle rectangle = new Rectangle(60, 40, 220, 180);
+        Rectangle rectangle = new Rectangle(220, 180, 60, 40);
+        rectangle.setFill(Color.BLUE);
 
         TextField textField = new TextField(String.format("X: %.2f   Y: %.2f", rectangle.getX(), rectangle.getY()));
         Scene scene = new Scene(pane);
+        textField.setEditable(false);
 
         scene.setOnKeyPressed(keyEvent -> {
             x = rectangle.getX();
             y = rectangle.getY();
             if(keyEvent.getCode()== KeyCode.UP){
+                y -= 10;
+            }
+            else if(keyEvent.getCode() == KeyCode.DOWN){
                 y += 10;
             }
             else if(keyEvent.getCode()== KeyCode.LEFT){
@@ -34,8 +39,11 @@ public class KeyboardMove extends Application {
             if(keyEvent.getCode()== KeyCode.RIGHT){
                 x += 10;
             }
+            x = Math.max(0, Math.min(x, pane.getWidth()-60));
+            y = Math.max(0, Math.min(y, pane.getHeight()-60));
+
             rectangle.setX(x);
-            rectangle.setX(y);
+            rectangle.setY(y);
             textField.setText(String.format("X: %.2f   Y: %.2f ", rectangle.getX(), rectangle.getY()));
         });
         pane.getChildren().add(rectangle);
